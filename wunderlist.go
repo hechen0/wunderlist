@@ -1,6 +1,12 @@
 package wunderlist
 
-import "net/url"
+import (
+	"net/url"
+	"net/http"
+	"bufio"
+	"io"
+	"encoding/json"
+)
 
 const (
 	version = "1"
@@ -30,11 +36,38 @@ type service struct {
 
 func NewClient() *Client{
 
-	baseurl, _ := url.Parse(baseURL)
+	base, _ := url.Parse(baseURL)
 
-	c := &Client{UserAgent: userAgent, BaseURL: baseurl}
-	c.share = service{}
+	c := &Client{UserAgent: userAgent, BaseURL: base}
+	c.share.client = c
 
 	c.Lists = (*listService)(&c.share)
 	return c
+}
+
+func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.Request,err error){
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return
+	}
+
+	u := c.BaseURL.ResolveReference(rel)
+
+	var buf io.ReadWriter
+
+	if body != nil {
+		buf = new(bufio.ReadWriter)
+
+		// check request body valid
+		if err = json.NewEncoder(buf).Encode(body); err != nil{
+			return
+		}
+	}
+
+	req, err = http.NewRequest(method, u.String(), buf)
+	if err != nil {
+		return
+	}
+
+	return
 }
