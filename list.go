@@ -1,7 +1,13 @@
 package wunderlist
 
-type List struct {
+import (
+	"fmt"
+)
 
+type List struct {
+	ID    *int `json:"id, omitempty"`
+	Title *string `json:"title, omitempty"`
+	Type  *string `json:"type, omitempty"`
 }
 
 type listService service
@@ -24,9 +30,20 @@ type listService service
 //	"revision": 10
 //  }
 //]
-func (l *listService) All() []List{
+func (s *listService) All() ([]*List, error) {
+	req, err := s.client.NewRequest("GET", "lists", nil)
+	if err != nil {
+		return nil, err
+	}
 
-	return []List(nil)
+	var lists []*List
+
+	_, err = s.client.Do(req, &lists)
+	if err != nil {
+		return nil, err
+	}
+
+	return lists, nil
 }
 
 //Get a specific List
@@ -45,8 +62,20 @@ func (l *listService) All() []List{
 //"type": "list",
 //"revision": 10
 //}
-func (l *listService) Get(id int) List{
-	return List{}
+func (s *listService) Get(id int) (*List, error) {
+	u := fmt.Sprintf("lists/%v", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	list := new(List)
+	_, err = s.client.Do(req, list)
+	if err != nil {
+		return nil, err
+	}
+
+	return list, nil
 }
 
 //Create a list
@@ -74,7 +103,7 @@ func (l *listService) Get(id int) List{
 //"revision": 1000,
 //"type": "list"
 //}
-func (l *listService) Create() (err error){
+func (l *listService) Create() (err error) {
 	return
 }
 
@@ -105,7 +134,7 @@ func (l *listService) Create() (err error){
 //"title": "Hello",
 //"type": "list"
 //}
-func (l *listService) Update() (err error){
+func (l *listService) Update() (err error) {
 	return
 }
 
@@ -119,6 +148,6 @@ func (l *listService) Update() (err error){
 //Response
 //
 //Status 204
-func (l *listService) Delete(id int) (err error){
+func (l *listService) Delete(id int) (err error) {
 	return
 }
