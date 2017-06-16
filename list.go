@@ -2,6 +2,9 @@ package wunderlist
 
 import (
 	"fmt"
+	"net/http"
+	"errors"
+	"context"
 )
 
 type List struct {
@@ -30,7 +33,7 @@ type listService service
 //	"revision": 10
 //  }
 //]
-func (s *listService) All() ([]*List, error) {
+func (s *listService) All(ctx context.Context) ([]*List, error) {
 	req, err := s.client.NewRequest("GET", "lists", nil)
 	if err != nil {
 		return nil, err
@@ -38,7 +41,7 @@ func (s *listService) All() ([]*List, error) {
 
 	var lists []*List
 
-	_, err = s.client.Do(req, &lists)
+	_, err = s.client.Do(ctx, req, &lists)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +65,7 @@ func (s *listService) All() ([]*List, error) {
 //"type": "list",
 //"revision": 10
 //}
-func (s *listService) Get(id int) (*List, error) {
+func (s *listService) Get(ctx context.Context, id int) (*List, error) {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -70,7 +73,7 @@ func (s *listService) Get(id int) (*List, error) {
 	}
 
 	list := new(List)
-	_, err = s.client.Do(req, list)
+	_, err = s.client.Do(ctx, req, list)
 	if err != nil {
 		return nil, err
 	}
@@ -103,8 +106,25 @@ func (s *listService) Get(id int) (*List, error) {
 //"revision": 1000,
 //"type": "list"
 //}
-func (l *listService) Create() (err error) {
-	return
+func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
+	u := "lists"
+	req, err := s.client.NewRequest("POST", u, list)
+	if err != nil {
+		return nil, err
+	}
+
+	newList := new(List)
+
+	resp, err := s.client.Do(ctx, req, newList)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusCreated {
+		return nil, errors.New(fmt.Sprintf("expected status: %v, got: %v", http.StatusCreated, resp.Status))
+	}
+
+	return newList, nil
 }
 
 //
@@ -134,8 +154,8 @@ func (l *listService) Create() (err error) {
 //"title": "Hello",
 //"type": "list"
 //}
-func (l *listService) Update() (err error) {
-	return
+func (s *listService) Update() (error) {
+	return nil
 }
 
 //Delete a list permanently
@@ -148,6 +168,6 @@ func (l *listService) Update() (err error) {
 //Response
 //
 //Status 204
-func (l *listService) Delete(id int) (err error) {
+func (s *listService) Delete(id int) (err error) {
 	return
 }

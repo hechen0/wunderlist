@@ -20,8 +20,8 @@ func setup(){
 	server = httptest.NewServer(mux)
 	client = NewClient()
 
-	url, _ := url.Parse(server.URL)
-	client.BaseURL = url
+	u, _ := url.Parse(server.URL)
+	client.BaseURL = u
 }
 
 func teardown(){

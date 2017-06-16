@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"reflect"
+	"context"
 )
 
 func TestListService_All(t *testing.T) {
@@ -23,7 +24,7 @@ func TestListService_All(t *testing.T) {
 		`)
 	})
 
-	lists, err := client.Lists.All()
+	lists, err := client.Lists.All(context.Background())
 	if err != nil {
 		t.Errorf("Lists.All returned error: %+v", err)
 	}
@@ -49,7 +50,7 @@ func TestListService_Get(t *testing.T) {
 		`)
 	})
 
-	list, err := client.Lists.Get(1)
+	list, err := client.Lists.Get(context.Background(), 1)
 	if err != nil {
 		t.Errorf("Lists.Get returned error: %+v", err)
 	}
@@ -58,5 +59,32 @@ func TestListService_Get(t *testing.T) {
 
 	if !reflect.DeepEqual(want, list){
 		t.Errorf("want: %+v, got: %+v", want, list)
+	}
+}
+
+func TestListService_Create(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/lists", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		fmt.Fprint(w, `
+		{
+			"id": 11111111,
+			"title": "test title"
+		}
+		`)
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	want := &List{Title: String("test title")}
+	got, err := client.Lists.Create(context.Background(), want)
+	if err != nil {
+		t.Errorf("Lists.Create returned error: %+v", err)
+	}
+
+	if got.Title != want.Title {
+		t.Errorf("want: %+v, got: %+v", want, got)
 	}
 }

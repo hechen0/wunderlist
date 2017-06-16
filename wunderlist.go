@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"io"
 	"encoding/json"
+	"context"
 )
 
 const (
@@ -79,10 +80,19 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.
 	return
 }
 
-func (c *Client) Do(req *http.Request, v interface{}) (resp *http.Response, err error) {
-	resp, err = c.client.Do(req)
+func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
+
+	req = req.WithContext(ctx)
+
+	resp, err := c.client.Do(req)
+
 	if err != nil {
-		return nil, err
+
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
 	}
 
 	if v != nil {
@@ -91,12 +101,12 @@ func (c *Client) Do(req *http.Request, v interface{}) (resp *http.Response, err 
 		}
 	}
 
-	return
+	return nil, err
 }
 
 // Bool is a helper routine that allocates a new bool value
 // to store v and returns a pointer to it.
-func Bool(v bool) *bool { return &v }
+//func Bool(v bool) *bool { return &v }
 
 // Int is a helper routine that allocates a new int value
 // to store v and returns a pointer to it.
