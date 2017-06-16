@@ -8,9 +8,9 @@ import (
 )
 
 type List struct {
-	ID    *int `json:"id, omitempty"`
-	Title *string `json:"title, omitempty"`
-	Type  *string `json:"type, omitempty"`
+	ID    *int `json:"id,omitempty"`
+	Title *string `json:"title,omitempty"`
+	Type  *string `json:"type,omitempty"`
 }
 
 type listService service
@@ -154,8 +154,20 @@ func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
 //"title": "Hello",
 //"type": "list"
 //}
-func (s *listService) Update() (error) {
-	return nil
+func (s *listService) Update(ctx context.Context, list *List) (*List, error) {
+	u := fmt.Sprintf("lists/%d", list.ID)
+	req, err := s.client.NewRequest("PATCH", u, list)
+	if err != nil {
+		return nil, err
+	}
+
+	l := new(List)
+	_, err = s.client.Do(ctx, req, l)
+	if err != nil {
+		return nil, err
+	}
+
+	return l, nil
 }
 
 //Delete a list permanently
@@ -168,6 +180,20 @@ func (s *listService) Update() (error) {
 //Response
 //
 //Status 204
-func (s *listService) Delete(id int) (err error) {
-	return
+func (s *listService) Delete(ctx context.Context, list *List) (error) {
+	u := fmt.Sprintf("lists/%v", list.ID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		return errors.New(fmt.Sprintf("expected status: %v, got: %v", http.StatusNoContent, resp.Status))
+	}
+
+	return nil
 }

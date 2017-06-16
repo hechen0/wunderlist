@@ -41,7 +41,4 @@ func TestNewClient(t *testing.T) {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
 	}
 
-	if got, want := c.UserAgent, userAgent; got != want {
-		t.Errorf("NewClient UserAgent is %v, want %v", got, want)
-	}
 }

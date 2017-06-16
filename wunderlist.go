@@ -3,16 +3,14 @@ package wunderlist
 import (
 	"net/url"
 	"net/http"
-	"bufio"
 	"io"
 	"encoding/json"
 	"context"
+	"bytes"
 )
 
 const (
-	version   = "1"
-	baseURL   = "https://a.wunderlist.com/"
-	userAgent = "hechen0/wunderlist " + version
+	baseURL = "https://a.wunderlist.com/"
 )
 
 type Client struct {
@@ -20,9 +18,6 @@ type Client struct {
 
 	// Base URL for API requests.
 	BaseURL *url.URL
-
-	// User agent used when communicating with the API.
-	UserAgent string
 
 	// Reuse a single struct instead of allocating one for each service on the heap.
 	share service
@@ -42,7 +37,7 @@ func NewClient() *Client {
 
 	base, _ := url.Parse(baseURL)
 
-	c := &Client{UserAgent: userAgent, BaseURL: base, client: http.DefaultClient}
+	c := &Client{BaseURL: base, client: http.DefaultClient}
 	c.share.client = c
 
 	c.Lists = (*listService)(&c.share)
@@ -64,7 +59,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.
 	var buf io.ReadWriter
 
 	if body != nil {
-		buf = new(bufio.ReadWriter)
+		buf = new(bytes.Buffer)
 
 		if err = json.NewEncoder(buf).Encode(body); err != nil {
 			return
@@ -90,7 +85,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 	resp, err := c.client.Do(req)
 
 	if err != nil {
-
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
@@ -104,7 +98,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*htt
 		}
 	}
 
-	return nil, err
+	return resp, nil
 }
 
 // Bool is a helper routine that allocates a new bool value
