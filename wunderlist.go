@@ -66,7 +66,6 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.
 	if body != nil {
 		buf = new(bufio.ReadWriter)
 
-		// check request body valid
 		if err = json.NewEncoder(buf).Encode(body); err != nil {
 			return
 		}
@@ -75,6 +74,10 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.
 	req, err = http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return
+	}
+
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
 	}
 
 	return
