@@ -81,31 +81,7 @@ func (s *listService) Get(ctx context.Context, id int) (*List, error) {
 	return list, nil
 }
 
-//Create a list
-//
-//POST a.wunderlist.com/api/v1/lists
-//Data
-//
-//NAME	TYPE	NOTES
-//title	string	required. maximum length is 255 characters
-//Request body example
-//
-//json
-//{
-//"title": "Hallo"
-//}
-//Response
-//
-//Status: 201
-//
-//json
-//{
-//"id": 83526310,
-//"created_at": "2013-08-30T08:29:46.203Z",
-//"title": "Read Later",
-//"revision": 1000,
-//"type": "list"
-//}
+
 func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
 	u := "lists"
 	req, err := s.client.NewRequest("POST", u, list)
@@ -131,29 +107,6 @@ func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
 //Update a list by overwriting properties
 //
 //PATCH a.wunderlist.com/api/v1/lists/:id
-//Data
-//
-//NAME	TYPE	NOTES
-//revision	integer	required
-//title	string	maximum length is 255 characters
-//Request body example
-//
-//json
-//{
-//"revision": 1000,
-//"title": "Hallo"
-//}
-//Response
-//
-//Status 200
-//
-//json
-//{
-//"id": 409233670,
-//"revision": 1001,
-//"title": "Hello",
-//"type": "list"
-//}
 func (s *listService) Update(ctx context.Context, list *List) (*List, error) {
 	u := fmt.Sprintf("lists/%d", list.ID)
 	req, err := s.client.NewRequest("PATCH", u, list)
@@ -173,15 +126,8 @@ func (s *listService) Update(ctx context.Context, list *List) (*List, error) {
 //Delete a list permanently
 //
 //DELETE a.wunderlist.com/api/v1/lists/:id
-//Params
-//
-//NAME	TYPE	NOTES
-//revision	integer	required
-//Response
-//
-//Status 204
-func (s *listService) Delete(ctx context.Context, list *List) (error) {
-	u := fmt.Sprintf("lists/%v", list.ID)
+func (s *listService) Delete(ctx context.Context, id int) (error) {
+	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err

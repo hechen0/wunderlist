@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseURL = "https://a.wunderlist.com/"
+	baseURL = "https://a.wunderlist.com/api/v1/"
 )
 
 type Client struct {
