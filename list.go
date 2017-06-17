@@ -19,20 +19,6 @@ type ListService service
 //
 //GET a.wunderlist.com/api/v1/lists
 //
-//Response
-//Status: 200
-//
-//json
-//[
-//  {
-//      "id": 83526310,
-//	"created_at": "2013-08-30T08:29:46.203Z",
-//	"title": "Read Later",
-//	"list_type": "list",
-//	"type": "list",
-//	"revision": 10
-//  }
-//]
 func (s *ListService) All(ctx context.Context) ([]*List, error) {
 	req, err := s.client.NewRequest("GET", "lists", nil)
 	if err != nil {
@@ -52,19 +38,7 @@ func (s *ListService) All(ctx context.Context) ([]*List, error) {
 //Get a specific List
 //
 //GET a.wunderlist.com/api/v1/lists/:id
-//Response
 //
-//Status: 200
-//
-//json
-//{
-//"id": 83526310,
-//"created_at": "2013-08-30T08:29:46.203Z",
-//"title": "Read Later",
-//"list_type": "list",
-//"type": "list",
-//"revision": 10
-//}
 func (s *ListService) Get(ctx context.Context, id int) (*List, error) {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
