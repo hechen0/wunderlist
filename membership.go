@@ -7,7 +7,7 @@ import (
 
 //https://developer.wunderlist.com/documentation/endpoints/membership
 
-type membershipService service
+type MembershipService service
 
 type Membership struct {
 	Id       *string `json:"id,omitempty"`
@@ -25,7 +25,7 @@ type Membership struct {
 //
 //GET a.wunderlist.com/api/v1/memberships
 //
-func (s *membershipService) All(ctx context.Context) ([]*Membership, error) {
+func (s *MembershipService) All(ctx context.Context) ([]*Membership, error) {
 	u := "memberships"
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *membershipService) All(ctx context.Context) ([]*Membership, error) {
 //
 //POST a.wunderlist.com/api/v1/memberships
 //
-func (s *membershipService) AddMember(ctx context.Context, membership *Membership) (*Membership, error) {
+func (s *MembershipService) AddMember(ctx context.Context, membership *Membership) (*Membership, error) {
 	u := "memberships"
 	req, err := s.client.NewRequest("POST", u, membership)
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *membershipService) AddMember(ctx context.Context, membership *Membershi
 //
 //PATCH a.wunderlist.com/api/v1/memberships/:id
 //
-func (s *membershipService) Accept(ctx context.Context, membership *Membership) (*Membership, error) {
+func (s *MembershipService) Accept(ctx context.Context, membership *Membership) (*Membership, error) {
 	u := fmt.Sprintf("memberships/%v", membership.Id)
 	req, err := s.client.NewRequest("PATCH", u, membership)
 	if err != nil {
@@ -90,7 +90,7 @@ func (s *membershipService) Accept(ctx context.Context, membership *Membership) 
 //
 //DELETE a.wunderlist.com/api/v1/memberships/:id
 //
-func (s *membershipService) Reject(ctx context.Context, id int) (error) {
+func (s *MembershipService) Reject(ctx context.Context, id int) (error) {
 	u := fmt.Sprintf("memberships/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

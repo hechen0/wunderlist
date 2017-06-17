@@ -13,7 +13,7 @@ type List struct {
 	Type  *string `json:"type,omitempty"`
 }
 
-type listService service
+type ListService service
 
 //Get all Lists a user has permission to
 //
@@ -33,7 +33,7 @@ type listService service
 //	"revision": 10
 //  }
 //]
-func (s *listService) All(ctx context.Context) ([]*List, error) {
+func (s *ListService) All(ctx context.Context) ([]*List, error) {
 	req, err := s.client.NewRequest("GET", "lists", nil)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (s *listService) All(ctx context.Context) ([]*List, error) {
 //"type": "list",
 //"revision": 10
 //}
-func (s *listService) Get(ctx context.Context, id int) (*List, error) {
+func (s *ListService) Get(ctx context.Context, id int) (*List, error) {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -81,8 +81,7 @@ func (s *listService) Get(ctx context.Context, id int) (*List, error) {
 	return list, nil
 }
 
-
-func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
+func (s *ListService) Create(ctx context.Context, list *List) (*List, error) {
 	u := "lists"
 	req, err := s.client.NewRequest("POST", u, list)
 	if err != nil {
@@ -107,7 +106,7 @@ func (s *listService) Create(ctx context.Context, list *List) (*List, error) {
 //Update a list by overwriting properties
 //
 //PATCH a.wunderlist.com/api/v1/lists/:id
-func (s *listService) Update(ctx context.Context, list *List) (*List, error) {
+func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 	u := fmt.Sprintf("lists/%d", list.ID)
 	req, err := s.client.NewRequest("PATCH", u, list)
 	if err != nil {
@@ -126,7 +125,7 @@ func (s *listService) Update(ctx context.Context, list *List) (*List, error) {
 //Delete a list permanently
 //
 //DELETE a.wunderlist.com/api/v1/lists/:id
-func (s *listService) Delete(ctx context.Context, id int) (error) {
+func (s *ListService) Delete(ctx context.Context, id int) (error) {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

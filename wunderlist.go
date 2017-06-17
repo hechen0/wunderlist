@@ -26,8 +26,9 @@ type Client struct {
 	share service
 
 	// Services used for talking to different parts of the API.
-	Lists   *listService
-	Folders *folderService
+	Lists   *ListService
+	Folders *FolderService
+	Avatar  *AvatarService
 }
 
 type Auth struct {
@@ -46,8 +47,9 @@ func NewClient() *Client {
 	c := &Client{BaseURL: base, client: http.DefaultClient}
 	c.share.client = c
 
-	c.Lists = (*listService)(&c.share)
-	c.Folders = (*folderService)(&c.share)
+	c.Lists = (*ListService)(&c.share)
+	c.Folders = (*FolderService)(&c.share)
+	c.Avatar = (*AvatarService)(&c.share)
 
 	return c
 }

@@ -7,7 +7,7 @@ import (
 	"errors"
 )
 
-type avatarService service
+type AvatarService service
 
 type Image struct {
 	Url      *string
@@ -17,7 +17,7 @@ type Image struct {
 
 //User avatars of different sizes can be fetched or loaded inline in HTML
 //https://developer.wunderlist.com/documentation/endpoints/avatar
-func (s *avatarService) Get(ctx context.Context, image *Image) (*Image, error) {
+func (s *AvatarService) Get(ctx context.Context, image *Image) (*Image, error) {
 	u := fmt.Sprintf("/avatar")
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -30,13 +30,13 @@ func (s *avatarService) Get(ctx context.Context, image *Image) (*Image, error) {
 	}
 
 	if resp.StatusCode != http.StatusFound {
-		return nil, errors.New(fmt.Sprintf("expected avatarService.Get return status: %v, got: %v", http.StatusFound, resp.Status))
+		return nil, errors.New(fmt.Sprintf("expected AvatarService.Get return status: %v, got: %v", http.StatusFound, resp.Status))
 	}
 
 	location := resp.Header.Get("Location")
 
 	if location == "" {
-		return nil, errors.New("expected avatarService.Get return image location got empty")
+		return nil, errors.New("expected AvatarService.Get return image location got empty")
 	}
 
 	image.Url = String(location)

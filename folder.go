@@ -8,7 +8,7 @@ import (
 )
 
 //https://developer.wunderlist.com/documentation/endpoints/folder
-type folderService service
+type FolderService service
 
 type Folder struct {
 	Id                 *int `json:"id,omitempty"`
@@ -33,7 +33,7 @@ type FolderRevision struct {
 //
 //GET a.wunderlist.com/api/v1/folders
 //
-func (s *folderService) All(ctx context.Context) ([]*Folder, error) {
+func (s *FolderService) All(ctx context.Context) ([]*Folder, error) {
 	u := fmt.Sprintf("folders")
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func (s *folderService) All(ctx context.Context) ([]*Folder, error) {
 //
 //GET a.wunderlist.com/api/v1/folders/:id
 //
-func (s *folderService) Get(ctx context.Context, id int) (*Folder, error) {
+func (s *FolderService) Get(ctx context.Context, id int) (*Folder, error) {
 	u := fmt.Sprintf("folders/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func (s *folderService) Get(ctx context.Context, id int) (*Folder, error) {
 //
 //POST a.wunderlist.com/api/v1/folders
 //
-func (s *folderService) Create(ctx context.Context, folder *Folder) (*Folder, error) {
+func (s *FolderService) Create(ctx context.Context, folder *Folder) (*Folder, error) {
 	u := "folders"
 	req, err := s.client.NewRequest("POST", u, folder)
 	if err != nil {
@@ -97,7 +97,7 @@ func (s *folderService) Create(ctx context.Context, folder *Folder) (*Folder, er
 //
 //PATCH a.wunderlist.com/api/v1/folders/:id
 //
-func (s *folderService) Update(ctx context.Context, folder *Folder) (*Folder, error) {
+func (s *FolderService) Update(ctx context.Context, folder *Folder) (*Folder, error) {
 	u := fmt.Sprintf("folders/%v", folder.Id)
 	req, err := s.client.NewRequest("PATCH", u, folder)
 	if err != nil {
@@ -117,7 +117,7 @@ func (s *folderService) Update(ctx context.Context, folder *Folder) (*Folder, er
 //
 //DELETE a.wunderlist.com/api/v1/folders/:id
 //
-func (s *folderService) Delete(ctx context.Context, id int) (error) {
+func (s *FolderService) Delete(ctx context.Context, id int) (error) {
 	u := fmt.Sprintf("folders/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func (s *folderService) Delete(ctx context.Context, id int) (error) {
 //
 //GET a.wunderlist.com/api/v1/folder_revisions
 //
-func (s *folderService) FolderRevisions(ctx context.Context) ([]*FolderRevision, error) {
+func (s *FolderService) FolderRevisions(ctx context.Context) ([]*FolderRevision, error) {
 	u := fmt.Sprintf("folder_revisions")
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
