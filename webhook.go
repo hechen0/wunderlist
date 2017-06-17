@@ -1,10 +1,10 @@
 package wunderlist
 
 import (
-	"net/http"
+	"context"
 	"errors"
 	"fmt"
-	"context"
+	"net/http"
 )
 
 // api: https://developer.wunderlist.com/documentation/endpoints/webhooks
@@ -12,8 +12,8 @@ import (
 type WebhookService service
 
 type Webhook struct {
-	Id            *int `json:"id,omitempty"`
-	ListId        *int `json:"list_id,omitempty"`
+	Id            *int    `json:"id,omitempty"`
+	ListId        *int    `json:"list_id,omitempty"`
 	Url           *string `json:"url,omitempty"`
 	ProcessorType *string `json:"processor_type,omitempty"`
 	Configuration *string `json:"configuration,omitempty"`
@@ -68,7 +68,7 @@ func (s *WebhookService) Create(ctx context.Context, webhook *Webhook) (*Webhook
 //
 //DELETE a.wunderlist.com/api/v1/webhooks/:id
 //
-func (s *WebhookService) Delete(ctx context.Context, id, revision int) (error) {
+func (s *WebhookService) Delete(ctx context.Context, id, revision int) error {
 	u := fmt.Sprintf("webhooks/%v?revision=%v", id, revision)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
