@@ -7,17 +7,25 @@ import (
 	"context"
 )
 
-type List struct {
-	ID    *int `json:"id,omitempty"`
-	Title *string `json:"title,omitempty"`
-	Type  *string `json:"type,omitempty"`
-}
-
+// https://developer.wunderlist.com/documentation/endpoints/list
 type ListService service
 
-//Get all Lists a user has permission to
+type List struct {
+	ID                 *int `json:"id,omitempty"`
+	Title              *string `json:"title,omitempty"`
+	Type               *string `json:"type,omitempty"`
+	Completed          *bool `json:"completed,omitempty"`
+	CreatedAt          *string "created_at,omitempty"
+	CreatedById        *int "created_by_id,omitempty"
+	CreatedByRequestId *string "created_by_request_id,omitempty"
+	ListId             *int"list_id,omitempty"
+	Revision           *int "revision,omitempty"
+	Starred            *bool "starred,omitempty"
+}
+
+// Get all Lists a user has permission to
 //
-//GET a.wunderlist.com/api/v1/lists
+// GET a.wunderlist.com/api/v1/lists
 //
 func (s *ListService) All(ctx context.Context) ([]*List, error) {
 	req, err := s.client.NewRequest("GET", "lists", nil)
@@ -35,9 +43,9 @@ func (s *ListService) All(ctx context.Context) ([]*List, error) {
 	return lists, nil
 }
 
-//Get a specific List
+// Get a specific List
 //
-//GET a.wunderlist.com/api/v1/lists/:id
+// GET a.wunderlist.com/api/v1/lists/:id
 //
 func (s *ListService) Get(ctx context.Context, id int) (*List, error) {
 	u := fmt.Sprintf("lists/%v", id)
@@ -55,6 +63,9 @@ func (s *ListService) Get(ctx context.Context, id int) (*List, error) {
 	return list, nil
 }
 
+//
+// Create a list
+//
 func (s *ListService) Create(ctx context.Context, list *List) (*List, error) {
 	u := "lists"
 	req, err := s.client.NewRequest("POST", u, list)
@@ -79,7 +90,6 @@ func (s *ListService) Create(ctx context.Context, list *List) (*List, error) {
 //
 //Update a list by overwriting properties
 //
-//PATCH a.wunderlist.com/api/v1/lists/:id
 func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 	u := fmt.Sprintf("lists/%d", list.ID)
 	req, err := s.client.NewRequest("PATCH", u, list)
@@ -96,9 +106,9 @@ func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 	return l, nil
 }
 
+//
 //Delete a list permanently
 //
-//DELETE a.wunderlist.com/api/v1/lists/:id
 func (s *ListService) Delete(ctx context.Context, id int) (error) {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
