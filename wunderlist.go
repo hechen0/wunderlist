@@ -19,14 +19,20 @@ type Client struct {
 	// Base URL for API requests.
 	BaseURL *url.URL
 
+	// Client ID and access token
+	Auth *Auth
+
 	// Reuse a single struct instead of allocating one for each service on the heap.
 	share service
 
 	// Services used for talking to different parts of the API.
-	Lists *listService
+	Lists   *listService
+	Folders *folderService
+}
 
-	// access token
-	token string
+type Auth struct {
+	Token    string
+	ClientId string
 }
 
 type service struct {
@@ -41,11 +47,13 @@ func NewClient() *Client {
 	c.share.client = c
 
 	c.Lists = (*listService)(&c.share)
+	c.Folders = (*folderService)(&c.share)
+
 	return c
 }
 
-func (c *Client) SetToken(token string) {
-	c.token = token
+func (c *Client) SetAuth(auth *Auth) {
+	c.Auth = auth
 }
 
 func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.Request, err error) {
@@ -81,6 +89,9 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (req *http.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
 
 	req = req.WithContext(ctx)
+
+	req.Header.Set("X-Access-Token", c.Auth.Token)
+	req.Header.Set("X-Client-ID", c.Auth.ClientId)
 
 	resp, err := c.client.Do(req)
 

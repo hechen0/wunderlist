@@ -15,7 +15,7 @@ var (
 	server *httptest.Server
 )
 
-func setup(){
+func setup() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 	client = NewClient()
@@ -24,7 +24,7 @@ func setup(){
 	client.BaseURL = u
 }
 
-func teardown(){
+func teardown() {
 	server.Close()
 }
 

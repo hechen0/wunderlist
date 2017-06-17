@@ -11,16 +11,16 @@ import (
 type folderService service
 
 type Folder struct {
-	Id                 *string `json:"id,omitempty"`
+	Id                 *int `json:"id,omitempty"`
 	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedById        *string `json:"created_by_id,omitempty"`
+	CreatedById        *int `json:"created_by_id,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	ListIds            []*string `json:"list_ids,omitempty"`
-	Revision           *string `json:"revision,omitempty"`
+	ListIds            []*int `json:"list_ids,omitempty"`
+	Revision           *int `json:"revision,omitempty"`
 	Title              *string `json:"title,omitempty"`
 	Type               *string `json:"type,omitempty"`
 	UpdatedAt          *string `json:"updated_at,omitempty"`
-	UserId             *string `json:"user_id,omitempty"`
+	UserId             *int `json:"user_id,omitempty"`
 }
 
 type FolderRevision struct {
@@ -41,7 +41,7 @@ func (s *folderService) All(ctx context.Context) ([]*Folder, error) {
 	}
 
 	var folders []*Folder
-	_, err = s.client.Do(ctx, req, folders)
+	_, err = s.client.Do(ctx, req, &folders)
 	if err != nil {
 		return nil, err
 	}
