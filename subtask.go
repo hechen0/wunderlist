@@ -21,7 +21,7 @@ type Subtask struct {
 	ListId             *int `json:"list_id,omitempty"`
 	Revision           *int `json:"revision,omitempty"`
 	Starred            *bool `json:"starred,omitempty"`
-	DueDate            *string `json:"due_date"`
+	DueDate            *string `json:"due_date,omitempty"`
 	RecurrenceCount    *string `json:"recurrence_count,omitempty"`
 	RecurrenceType     *string `json:"recurrence_type,omitempty"`
 	CompletedAt        *string `json:"completed_at,omitempty"`
