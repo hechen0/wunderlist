@@ -32,17 +32,10 @@ type File struct {
 // Get Files for a Task or List
 //
 func (s *FileService) All(ctx context.Context, task_or_list interface{}) ([]*File, error) {
-	var id int
-	var t string
-	switch task_or_list.(type) {
-	case Task:
-		id = *Task(task_or_list).Id
-		t = "task_id"
-	case List:
-		id = *List(task_or_list).Id
-		t = "list_id"
-	default:
-		return nil, errors.New(fmt.Sprintf("expect Task or List, got: %v", task_or_list))
+	t, id, err := ParseTaskOrList(task_or_list)
+
+	if err != nil {
+		return nil, err
 	}
 
 	u := fmt.Sprintf("files?%v=%v", t, id)

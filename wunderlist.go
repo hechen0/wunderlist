@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"context"
 	"bytes"
+	"errors"
+	"fmt"
 )
 
 const (
@@ -125,3 +127,15 @@ func Int(v int) *int { return &v }
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
+
+// Get task or list
+func ParseTaskOrList(task_or_list interface{}) (id int, t string, err error) {
+	switch task_or_list.(type) {
+	case Task:
+		return *Task(task_or_list).Id, "task_id", nil
+	case List:
+		return *List(task_or_list).Id, "list_id", nil
+	default:
+		return nil, nil, errors.New(fmt.Sprintf("expect Task or List, got: %v", task_or_list))
+	}
+}
