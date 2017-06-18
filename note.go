@@ -16,7 +16,7 @@ type Note struct {
 	Content            *string `json:"Content,omitempty"`
 	TaskId             *int `json:"task_id,omitempty"`
 	Type               *string `json:"type,omitempty"`
-	CreatedByRequestId *string "created_by_request_id,omitempty"
+	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
 }
 
 //

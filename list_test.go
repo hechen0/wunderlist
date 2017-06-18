@@ -29,7 +29,7 @@ func TestListService_All(t *testing.T) {
 		t.Errorf("Lists.All returned error: %+v", err)
 	}
 
-	want := []*List{{ID: Int(102721804), Title: String("inbox"), Type: String("list")}}
+	want := []*List{{Id: Int(102721804), Title: String("inbox"), Type: String("list")}}
 
 	if !reflect.DeepEqual(want, lists) {
 		t.Errorf("want: %+v, got: %+v", want, lists)
@@ -54,7 +54,7 @@ func TestListService_Get(t *testing.T) {
 		t.Errorf("Lists.Get returned error: %+v", err)
 	}
 
-	want := &List{ID: Int(1)}
+	want := &List{Id: Int(1)}
 
 	if !reflect.DeepEqual(want, list) {
 		t.Errorf("want: %+v, got: %+v", want, list)
