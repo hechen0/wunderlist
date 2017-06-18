@@ -109,9 +109,9 @@ func (s *FileService) Create(ctx context.Context, task *Task, upload *Upload) (*
 //
 //Delete a file permanently
 //
-func (s *FileService) Delete(ctx context.Context, id, revision int) (error) {
-	u := fmt.Sprintf("files/%v?revision=%v", id, revision)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+func (s *FileService) Delete(ctx context.Context, file *File) (error) {
+	u := fmt.Sprintf("files/%v", file.Id)
+	req, err := s.client.NewRequest("DELETE", u, file)
 	if err != nil {
 		return err
 	}
