@@ -21,14 +21,23 @@ type Task struct {
 	ListId             *int `json:"list_id,omitempty"`
 	Revision           *int `json:"revision,omitempty"`
 	Starred            *bool `json:"starred,omitempty"`
+	DueDate            *string `json:"due_date"`
+	RecurrenceCount    *string `json:"recurrence_count,omitempty"`
+	RecurrenceType     *string `json:"recurrence_type,omitempty"`
+	CompletedAt        *string `json:"completed_at,omitempty"`
+	CompletedById      *string `json:"completed_by_id,omitempty"`
+	AssigneeId         *string `json:"assignee_id,omitempty"`
+
+	//an array of attributes to delete from the task, e.g. 'due_date'
+	Remove []string `json:"remove,omitempty"`
 }
 
-// Get all Lists a user has permission to
 //
-// GET a.wunderlist.com/api/v1/lists
+//Get Tasks for a List
 //
-func (s *TaskService) All(ctx context.Context) ([]*Task, error) {
-	req, err := s.client.NewRequest("GET", "tasks", nil)
+func (s *TaskService) All(ctx context.Context, list_id int) ([]*Task, error) {
+	u := fmt.Sprintf("tasks?list_id=%v", list_id)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -43,9 +52,28 @@ func (s *TaskService) All(ctx context.Context) ([]*Task, error) {
 	return tasks, nil
 }
 
-// Get a specific List
 //
-// GET a.wunderlist.com/api/v1/lists/:id
+//Get Completed Tasks
+//
+func (s *TaskService) Completed(ctx context.Context, list_id int, completed bool) ([]*Task, error) {
+	u := fmt.Sprintf("tasks?list_id=%v&completed=%v", list_id, completed)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var tasks []*Task
+
+	_, err = s.client.Do(ctx, req, &tasks)
+	if err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}
+
+//
+//Get a specific task
 //
 func (s *TaskService) Get(ctx context.Context, id int) (*Task, error) {
 	u := fmt.Sprintf("tasks/%v", id)
@@ -64,7 +92,7 @@ func (s *TaskService) Get(ctx context.Context, id int) (*Task, error) {
 }
 
 //
-// Create a list
+// Create a task
 //
 func (s *TaskService) Create(ctx context.Context, task *Task) (*Task, error) {
 	u := "tasks"
@@ -88,29 +116,30 @@ func (s *TaskService) Create(ctx context.Context, task *Task) (*Task, error) {
 }
 
 //
-//Update a list by overwriting properties
+// Update a task by overwriting properties
 //
 func (s *TaskService) Update(ctx context.Context, task *Task) (*Task, error) {
 	u := fmt.Sprintf("tasks/%d", task.Id)
+
 	req, err := s.client.NewRequest("PATCH", u, task)
 	if err != nil {
 		return nil, err
 	}
 
-	l := new(Task)
-	_, err = s.client.Do(ctx, req, l)
+	newTask := new(Task)
+	_, err = s.client.Do(ctx, req, newTask)
 	if err != nil {
 		return nil, err
 	}
 
-	return l, nil
+	return newTask, nil
 }
 
 //
-//Delete a list permanently
+//Delete a task
 //
-func (s *TaskService) Delete(ctx context.Context, id int) (error) {
-	u := fmt.Sprintf("tasks/%v", id)
+func (s *TaskService) Delete(ctx context.Context, id, revision int) (error) {
+	u := fmt.Sprintf("tasks/%v?revision=%v", id, revision)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
