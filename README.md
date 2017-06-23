@@ -2,6 +2,10 @@
 
 use for [my personal website](https://hechen0.com).
 
+## documentation
+
+check [godoc](http://godoc.org/github.com/hechen0/wunderlist)
+or read the code
 
 ## Usage
 
@@ -14,6 +18,7 @@ in your project
 ```go
     import "github.com/hechen0/wunderlist"
 ```
+
 
 #### init api client
 
