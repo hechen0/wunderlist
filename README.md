@@ -64,7 +64,7 @@ then get the token use a oatuh2 library, or by hand :) .
 
 first, i just wanna collect all my todo data, so i write a simple get
 request to retrieve all my todo data, but as time goes by, the simple get
-request grow bigger and bigger cause i need more detail about my data, suck
+request grow bigger and bigger cause i need more detaild about my data, such
 as my file, my note, my reminder, so one day, i decide to write a full
 fuctional wunderlist api client.
 
