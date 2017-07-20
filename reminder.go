@@ -1,22 +1,22 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/reminder
 type ReminderService service
 
 type Reminder struct {
-	Id                  *int `json:"id,omitempty"`
+	Id                  *int    `json:"id,omitempty"`
 	Type                *string `json:"type,omitempty"`
 	CreatedAt           *string `json:"created_at,omitempty"`
 	CreatedByRequestId  *string `json:"created_by_request_id,omitempty"`
-	Revision            *int `json:"revision,omitempty"`
-	TaskId              *int `json:"task_id,omitempty"`
+	Revision            *int    `json:"revision,omitempty"`
+	TaskId              *int    `json:"task_id,omitempty"`
 	Date                *string `json:"date,omitempty"`
 	UpdatedAt           *string `json:"updated_at,omitempty"`
 	CreatedByDeviceUdid *string `json:"created_by_device_udid,omitempty"`
@@ -94,7 +94,7 @@ func (s *ReminderService) Update(ctx context.Context, reminder *Reminder) (*Remi
 //
 // Delete a Reminder
 //
-func (s *ReminderService) Delete(ctx context.Context, reminder *Reminder) (error) {
+func (s *ReminderService) Delete(ctx context.Context, reminder *Reminder) error {
 	u := fmt.Sprintf("reminders/%v", reminder.Id)
 	req, err := s.client.NewRequest("DELETE", u, reminder)
 	if err != nil {

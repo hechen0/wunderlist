@@ -1,8 +1,8 @@
 package wunderlist
 
 import (
-	"testing"
 	"net/http"
+	"testing"
 )
 
 func TestMembershipService_All(t *testing.T) {

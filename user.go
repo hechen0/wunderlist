@@ -15,7 +15,7 @@ type User struct {
 	UpdatedAt *string `json:"updated_at,omitempty"`
 	Name      *string `json:"name,omitempty"`
 	Type      *string `json:"type,omitempty"`
-	Revision  *int `json:"revision,omitempty"`
+	Revision  *int    `json:"revision,omitempty"`
 }
 
 //Fetch the currently logged in user

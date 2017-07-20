@@ -1,10 +1,10 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/task_comment
@@ -18,14 +18,14 @@ type CommentAuthor struct {
 
 type TaskComment struct {
 	Author             *CommentAuthor `json:"author,omitempty"`
-	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	Id                 *string `json:"id,omitempty"`
-	LocalCreatedAt     *string `json:"local_created_at,omitempty"`
-	Revision           *string `json:"revision,omitempty"`
-	TaskId             *string `json:"task_id,omitempty"`
-	Text               *string `json:"text,omitempty"`
-	Type               *string `json:"type,omitempty"`
+	CreatedAt          *string        `json:"created_at,omitempty"`
+	CreatedByRequestId *string        `json:"created_by_request_id,omitempty"`
+	Id                 *string        `json:"id,omitempty"`
+	LocalCreatedAt     *string        `json:"local_created_at,omitempty"`
+	Revision           *string        `json:"revision,omitempty"`
+	TaskId             *string        `json:"task_id,omitempty"`
+	Text               *string        `json:"text,omitempty"`
+	Type               *string        `json:"type,omitempty"`
 }
 
 //

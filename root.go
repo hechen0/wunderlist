@@ -10,8 +10,8 @@ type RootService service
 type Root struct {
 	Id       *int    `json:"id,omitempty"`
 	Type     *string `json:"type,omitempty"`
-	Revision *int `json:"revision,omitempty"`
-	UserId   *int `json:"user_id,omitempty"`
+	Revision *int    `json:"revision,omitempty"`
+	UserId   *int    `json:"user_id,omitempty"`
 }
 
 //Fetch the Root for the current User

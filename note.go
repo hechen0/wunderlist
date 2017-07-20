@@ -1,20 +1,20 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/note
 type NoteService service
 
 type Note struct {
-	Id                 *int `json:"id,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
+	Id                 *int    `json:"id,omitempty"`
+	Revision           *int    `json:"revision,omitempty"`
 	Content            *string `json:"Content,omitempty"`
-	TaskId             *int `json:"task_id,omitempty"`
+	TaskId             *int    `json:"task_id,omitempty"`
 	Type               *string `json:"type,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
 }
@@ -102,7 +102,7 @@ func (s *NoteService) Update(ctx context.Context, note *Note) (*Note, error) {
 //
 // Delete a note
 //
-func (s *NoteService) Delete(ctx context.Context, id int) (error) {
+func (s *NoteService) Delete(ctx context.Context, id int) error {
 	u := fmt.Sprintf("notes/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

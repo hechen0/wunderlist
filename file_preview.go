@@ -2,15 +2,15 @@ package wunderlist
 
 import (
 	"context"
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 //TODO: preview broken
 type FilePreviewService service
 
 type FilePreview struct {
-	Id  *int `json:"id,omitempty"`
+	Id  *int    `json:"id,omitempty"`
 	Url *string `json:"url,omitempty"`
 }
 
@@ -43,7 +43,7 @@ func (s *FilePreviewService) Get(ctx context.Context, file *File, size, platform
 	}
 
 	params := struct {
-		FileId   *int `json:"file_id,omitempty"`
+		FileId   *int    `json:"file_id,omitempty"`
 		Platform *string `json:"platform,omitempty"`
 		Size     *string `json:"size,omitempty"`
 	}{file.Id, platform, size}

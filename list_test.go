@@ -1,11 +1,11 @@
 package wunderlist
 
 import (
-	"testing"
-	"net/http"
-	"fmt"
-	"reflect"
 	"context"
+	"fmt"
+	"net/http"
+	"reflect"
+	"testing"
 )
 
 func TestListService_All(t *testing.T) {
@@ -84,4 +84,3 @@ func TestListService_Create(t *testing.T) {
 		t.Errorf("want: %+v, got: %+v", want, got)
 	}
 }
-

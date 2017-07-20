@@ -1,26 +1,26 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/list
 type ListService service
 
 type List struct {
-	Id                 *int `json:"id,omitempty"`
+	Id                 *int    `json:"id,omitempty"`
 	Title              *string `json:"title,omitempty"`
 	Type               *string `json:"type,omitempty"`
 	CreatedAt          *string `json:"created_at,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
+	Revision           *int    `json:"revision,omitempty"`
 	ListType           *string `json:"list_type,omitempty"`
-	OwnerId            *int `json:"owner_id,omitempty"`
+	OwnerId            *int    `json:"owner_id,omitempty"`
 	OwnerType          *string `json:"owner_type,omitempty"`
-	Public             *bool `json:"public,omitempty"`
+	Public             *bool   `json:"public,omitempty"`
 }
 
 //
@@ -107,7 +107,7 @@ func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 //
 //Delete a list permanently
 //
-func (s *ListService) Delete(ctx context.Context, id int) (error) {
+func (s *ListService) Delete(ctx context.Context, id int) error {
 	u := fmt.Sprintf("lists/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

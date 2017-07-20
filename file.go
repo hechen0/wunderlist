@@ -1,11 +1,11 @@
 package wunderlist
 
 import (
-	"net/http"
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"encoding/json"
-	"context"
+	"net/http"
 	"time"
 )
 
@@ -13,19 +13,19 @@ import (
 type FileService service
 
 type File struct {
-	ContentType        *string `json:"content_type,omitempty"`
-	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	FileName           *string `json:"file_name,omitempty"`
+	ContentType        *string      `json:"content_type,omitempty"`
+	CreatedAt          *string      `json:"created_at,omitempty"`
+	CreatedByRequestId *string      `json:"created_by_request_id,omitempty"`
+	FileName           *string      `json:"file_name,omitempty"`
 	FileSize           *json.Number `json:"file_size,omitempty"`
-	Id                 *int `json:"id,omitempty"`
-	LocalCreatedAt     *string `json:"local_created_at,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
-	TaskId             *int `json:"task_id,omitempty"`
-	Type               *string `json:"type,omitempty"`
-	UpdatedAt          *string `json:"updated_at,omitempty"`
-	Url                *string `json:"url,omitempty"`
-	UserId             *int `json:"user_id,omitempty"`
+	Id                 *int         `json:"id,omitempty"`
+	LocalCreatedAt     *string      `json:"local_created_at,omitempty"`
+	Revision           *int         `json:"revision,omitempty"`
+	TaskId             *int         `json:"task_id,omitempty"`
+	Type               *string      `json:"type,omitempty"`
+	UpdatedAt          *string      `json:"updated_at,omitempty"`
+	Url                *string      `json:"url,omitempty"`
+	UserId             *int         `json:"user_id,omitempty"`
 }
 
 //
@@ -82,8 +82,8 @@ func (s *FileService) Create(ctx context.Context, task *Task, upload *Upload) (*
 
 	timezone, _ := time.LoadLocation("Asia/Shanghai")
 	params := struct {
-		UploadId       *int `json:"upload_id"`
-		TaskId         *int `json:"task_id"`
+		UploadId       *int   `json:"upload_id"`
+		TaskId         *int   `json:"task_id"`
 		LocalCreatedAt string `json:"local_created_at"`
 	}{upload.Id, task.Id, time.Now().In(timezone).String()}
 
@@ -109,7 +109,7 @@ func (s *FileService) Create(ctx context.Context, task *Task, upload *Upload) (*
 //
 //Delete a file permanently
 //
-func (s *FileService) Delete(ctx context.Context, file *File) (error) {
+func (s *FileService) Delete(ctx context.Context, file *File) error {
 	u := fmt.Sprintf("files/%v", file.Id)
 	req, err := s.client.NewRequest("DELETE", u, file)
 	if err != nil {

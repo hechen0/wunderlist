@@ -1,26 +1,26 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/list
 type TaskService service
 
 type Task struct {
-	Id                 *int `json:"id,omitempty"`
+	Id                 *int    `json:"id,omitempty"`
 	Title              *string `json:"title,omitempty"`
 	Type               *string `json:"type,omitempty"`
-	Completed          *bool `json:"completed,omitempty"`
+	Completed          *bool   `json:"completed,omitempty"`
 	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedById        *int `json:"created_by_id,omitempty"`
+	CreatedById        *int    `json:"created_by_id,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	ListId             *int `json:"list_id,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
-	Starred            *bool `json:"starred,omitempty"`
+	ListId             *int    `json:"list_id,omitempty"`
+	Revision           *int    `json:"revision,omitempty"`
+	Starred            *bool   `json:"starred,omitempty"`
 	DueDate            *string `json:"due_date"`
 	RecurrenceCount    *string `json:"recurrence_count,omitempty"`
 	RecurrenceType     *string `json:"recurrence_type,omitempty"`
@@ -138,7 +138,7 @@ func (s *TaskService) Update(ctx context.Context, task *Task) (*Task, error) {
 //
 //Delete a task
 //
-func (s *TaskService) Delete(ctx context.Context, id, revision int) (error) {
+func (s *TaskService) Delete(ctx context.Context, id, revision int) error {
 	u := fmt.Sprintf("tasks/%v?revision=%v", id, revision)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

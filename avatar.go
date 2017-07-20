@@ -1,10 +1,10 @@
 package wunderlist
 
 import (
-	"fmt"
 	"context"
-	"net/http"
 	"errors"
+	"fmt"
+	"net/http"
 )
 
 type AvatarService service

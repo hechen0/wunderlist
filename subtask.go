@@ -1,26 +1,26 @@
 package wunderlist
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
-	"context"
 )
 
 // https://developer.wunderlist.com/documentation/endpoints/subtask
 type SubtaskService service
 
 type Subtask struct {
-	Id                 *int `json:"id,omitempty"`
+	Id                 *int    `json:"id,omitempty"`
 	Title              *string `json:"title,omitempty"`
 	Type               *string `json:"type,omitempty"`
-	Completed          *bool `json:"completed,omitempty"`
+	Completed          *bool   `json:"completed,omitempty"`
 	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedById        *int `json:"created_by_id,omitempty"`
+	CreatedById        *int    `json:"created_by_id,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	ListId             *int `json:"list_id,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
-	Starred            *bool `json:"starred,omitempty"`
+	ListId             *int    `json:"list_id,omitempty"`
+	Revision           *int    `json:"revision,omitempty"`
+	Starred            *bool   `json:"starred,omitempty"`
 	DueDate            *string `json:"due_date,omitempty"`
 	RecurrenceCount    *string `json:"recurrence_count,omitempty"`
 	RecurrenceType     *string `json:"recurrence_type,omitempty"`
@@ -147,7 +147,7 @@ func (s *SubtaskService) Update(ctx context.Context, subtask *Subtask) (*Subtask
 //
 //Delete a task
 //
-func (s *SubtaskService) Delete(ctx context.Context, subtask *Subtask) (error) {
+func (s *SubtaskService) Delete(ctx context.Context, subtask *Subtask) error {
 	u := fmt.Sprintf("subtasks/%v", subtask.Id)
 	req, err := s.client.NewRequest("DELETE", u, subtask)
 	if err != nil {

@@ -2,25 +2,25 @@ package wunderlist
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
 )
 
 //https://developer.wunderlist.com/documentation/endpoints/folder
 type FolderService service
 
 type Folder struct {
-	Id                 *int `json:"id,omitempty"`
+	Id                 *int    `json:"id,omitempty"`
 	CreatedAt          *string `json:"created_at,omitempty"`
-	CreatedById        *int `json:"created_by_id,omitempty"`
+	CreatedById        *int    `json:"created_by_id,omitempty"`
 	CreatedByRequestId *string `json:"created_by_request_id,omitempty"`
-	ListIds            []*int `json:"list_ids,omitempty"`
-	Revision           *int `json:"revision,omitempty"`
+	ListIds            []*int  `json:"list_ids,omitempty"`
+	Revision           *int    `json:"revision,omitempty"`
 	Title              *string `json:"title,omitempty"`
 	Type               *string `json:"type,omitempty"`
 	UpdatedAt          *string `json:"updated_at,omitempty"`
-	UserId             *int `json:"user_id,omitempty"`
+	UserId             *int    `json:"user_id,omitempty"`
 }
 
 type FolderRevision struct {
@@ -117,7 +117,7 @@ func (s *FolderService) Update(ctx context.Context, folder *Folder) (*Folder, er
 //
 //DELETE a.wunderlist.com/api/v1/folders/:id
 //
-func (s *FolderService) Delete(ctx context.Context, id int) (error) {
+func (s *FolderService) Delete(ctx context.Context, id int) error {
 	u := fmt.Sprintf("folders/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

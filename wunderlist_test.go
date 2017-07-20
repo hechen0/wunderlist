@@ -1,10 +1,10 @@
 package wunderlist
 
 import (
-	"testing"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"testing"
 )
 
 var (

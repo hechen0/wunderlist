@@ -12,13 +12,13 @@ type MembershipService service
 type Membership struct {
 	Id       *string `json:"id,omitempty"`
 	ListId   *string `json:"list_id,omitemptby"`
-	Owner    *bool `json:"owner,omitemptby"`
+	Owner    *bool   `json:"owner,omitemptby"`
 	Revision *string `json:"revision,omitempty"`
 	State    *string `json:"state,omitempty"`
 	Type     *string `json:"type,omitempty"`
 	UserId   *string `json:"user_id,omitempty"`
 	Email    *string `json:"email,omitempty"` // use to add member
-	Muted    *bool `json:"muted,omitempty"`
+	Muted    *bool   `json:"muted,omitempty"`
 }
 
 //Get Memberships for a List or the current User
@@ -90,7 +90,7 @@ func (s *MembershipService) Accept(ctx context.Context, membership *Membership) 
 //
 //DELETE a.wunderlist.com/api/v1/memberships/:id
 //
-func (s *MembershipService) Reject(ctx context.Context, id int) (error) {
+func (s *MembershipService) Reject(ctx context.Context, id int) error {
 	u := fmt.Sprintf("memberships/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -104,4 +104,3 @@ func (s *MembershipService) Reject(ctx context.Context, id int) (error) {
 
 	return nil
 }
-

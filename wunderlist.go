@@ -1,14 +1,14 @@
 package wunderlist
 
 import (
-	"net/url"
-	"net/http"
-	"io"
-	"encoding/json"
-	"context"
 	"bytes"
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 )
 
 const (
