@@ -1,4 +1,5 @@
 ## DEPRECATED cause wunderlist acquired by microsoft and stop maintaining
+### wunderlist team now developing a new todo app for microsoft -- microsoft todo :)
 #### Yet Another wunderlist api client for go.
 
 use for [my personal website](https://hechen0.com).
