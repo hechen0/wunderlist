@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/hechen0/wunderlist/branch/master/graph/badge.svg)](https://codecov.io/gh/hechen0/wunderlist)
+[![Build Status](https://travis-ci.org/hechen0/wunderlist.svg?branch=master)](https://travis-ci.org/hechen0/wunderlist)
+
 ## DEPRECATED cause wunderlist acquired by microsoft and stop maintaining
 ### wunderlist team now developing a new todo app for microsoft -- microsoft todo :)
 #### Yet Another wunderlist api client for go.
