@@ -86,7 +86,7 @@ func (s *ListService) Create(ctx context.Context, list *List) (*List, error) {
 }
 
 //
-//Update a list by overwriting properties
+// Update a list by overwriting properties
 //
 func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 	u := fmt.Sprintf("lists/%d", list.Id)
@@ -105,7 +105,7 @@ func (s *ListService) Update(ctx context.Context, list *List) (*List, error) {
 }
 
 //
-//Delete a list permanently
+// Delete a list permanently
 //
 func (s *ListService) Delete(ctx context.Context, id int) error {
 	u := fmt.Sprintf("lists/%v", id)

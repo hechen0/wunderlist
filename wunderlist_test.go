@@ -22,6 +22,8 @@ func setup() {
 
 	u, _ := url.Parse(server.URL)
 	client.BaseURL = u
+	auth := &Auth{Token: "0", ClientId: "0"}
+	client.SetAuth(auth)
 }
 
 func teardown() {

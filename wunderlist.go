@@ -132,10 +132,10 @@ func String(v string) *string { return &v }
 func ParseTaskOrList(task_or_list interface{}) (id int, t string, err error) {
 	switch task_or_list.(type) {
 	case Task:
-		return *Task(task_or_list).Id, "task_id", nil
+		return *task_or_list.(Task).Id, "task_id", nil
 	case List:
-		return *List(task_or_list).Id, "list_id", nil
+		return *task_or_list.(Task).Id, "list_id", nil
 	default:
-		return nil, nil, errors.New(fmt.Sprintf("expect Task or List, got: %v", task_or_list))
+		return 0, "", errors.New(fmt.Sprintf("expect Task or List, got: %v", task_or_list))
 	}
 }
